@@ -1,0 +1,85 @@
+/* Importando a fonte Roboto via Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    background-color: #f0f2f5;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Título principal */
+.header-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Classe para containers com bordas arredondadas */
+.rounded-container {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    padding: 15px;
+}
+
+/* Container geral com fundo e bordas arredondadas */
+.container-rounded {
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: #f0f2f5;
+    padding: 20px;
+}
+
+/* Estilização dos cards com bordas arredondadas */
+.custom-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    background-color: #ffffff;
+}
+
+.custom-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Botões grandes com efeito de hover */
+/* Adicionada a classe candidate-button para bordas arredondadas */
+.candidate-button {
+    border-radius: 20px !important;
+}
+
+.btn-lg {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-lg:hover {
+    filter: brightness(1.1);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Área dos gráficos */
+.graph-area {
+    margin-top: 20px;
+}
+
+/* Customização dos dropdowns e radio items */
+.Select-control, .RadioItems {
+    font-size: 1rem;
+}
+
+/* Links e botões */
+a, .btn-primary {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Imagens dos candidatos com bordas arredondadas */
+.candidate-img {
+    border-radius: 20px;
+    object-fit: contain;
+    max-height: 300px;
+}
