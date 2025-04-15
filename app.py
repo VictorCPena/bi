@@ -3,7 +3,6 @@ from dash import html, dcc, Input, Output, State
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
-import json
 import re
 
 # Função para formatar faixas numéricas ou valores monetários
@@ -79,10 +78,10 @@ cores = {
     "governo do estado do ceará": "#1b3b1a"
 }
 
-# Inicialização do app com um tema do Bootstrap (COSMO neste exemplo)
+# Inicialização do app com tema Bootstrap COSMO
 app = dash.Dash(
-    __name__, 
-    external_stylesheets=[dbc.themes.COSMO], 
+    __name__,
+    external_stylesheets=[dbc.themes.COSMO],
     suppress_callback_exceptions=True
 )
 app.title = "Anúncios de Candidatos"
@@ -137,7 +136,7 @@ def update_selected(n1, n2, n3):
         return "governo do estado do ceará"
     return dash.no_update
 
-# Callback para exibir os detalhes do candidato e os gráficos
+# Callback para exibir detalhes do candidato e gráficos
 @app.callback(
     Output("candidate-details", "children"),
     Output("candidate-details", "style"),
@@ -149,7 +148,6 @@ def show_candidate_details(candidato):
     
     df = df_all[df_all["candidato"] == candidato].copy()
     df["status"] = df["ad_delivery_stop_time"].isna().map({True: "Ativo", False: "Inativo"})
-
     total = len(df)
     ativos = len(df[df["status"] == "Ativo"])
     inativos = total - ativos
@@ -164,6 +162,7 @@ def show_candidate_details(candidato):
         template="plotly_white"
     )
     fig_temporal.update_layout(
+        autosize=True,
         font=dict(family="Roboto, sans-serif", size=12, color="#333"),
         paper_bgcolor="#f0f2f5",
         plot_bgcolor="#f0f2f5"
@@ -184,15 +183,18 @@ def show_candidate_details(candidato):
         markers=True
     )
     fig_invest.update_layout(
+        autosize=True,
         font=dict(family="Roboto, sans-serif", size=12, color="#333"),
         paper_bgcolor="#f0f2f5",
         plot_bgcolor="#f0f2f5"
     )
     
+    # Definindo o caminho da imagem com a extensão correta
     nome_arquivo = df["arquivo_base"].iloc[0]
-    caminho_imagem = f"/assets/images/{nome_arquivo}.jpg"
+    ext = "png" if nome_arquivo in ["alece", "gov-ce"] else "jpg"
+    caminho_imagem = f"/assets/images/{nome_arquivo}.{ext}"
 
-    # Cartão com informações do candidato com bordas arredondadas
+    # Cartão com informações do candidato
     card = dbc.Card([
         dbc.CardImg(src=caminho_imagem, top=True, className="candidate-img"),
         dbc.CardBody([
@@ -218,7 +220,6 @@ def show_candidate_details(candidato):
         ])
     ], className="custom-card mb-4 rounded-container")
 
-    # Define o estilo com bordas arredondadas para o container do candidato
     container_style = {
         "display": "block",
         "backgroundColor": cores.get(candidato, "#ffffff"),
@@ -227,10 +228,16 @@ def show_candidate_details(candidato):
         "margin": "20px 0"
     }
 
-    # Agrupa o cartão e os gráficos em containers, dispostos verticalmente
+    # Containers com gráficos responsivos
     card_container = dbc.Container(card, className="mb-4 rounded-container")
-    graph_temporal_container = dbc.Container(dcc.Graph(figure=fig_temporal), className="mb-4 rounded-container")
-    graph_invest_container = dbc.Container(dcc.Graph(figure=fig_invest), className="mb-4 rounded-container")
+    graph_temporal_container = dbc.Container(
+        dcc.Graph(figure=fig_temporal, config={'responsive': True}),
+        className="mb-4 rounded-container"
+    )
+    graph_invest_container = dbc.Container(
+        dcc.Graph(figure=fig_invest, config={'responsive': True}),
+        className="mb-4 rounded-container"
+    )
     
     content = html.Div(
         [card_container, graph_temporal_container, graph_invest_container],
@@ -257,10 +264,7 @@ def update_dropdown_options(selected_status, candidato):
     opcoes_dropdown = []
     for idx, row in df.iterrows():
         texto = row.get("ad_creative_bodies")
-        if not isinstance(texto, str):
-            texto = "Sem texto disponível"
-        else:
-            texto = texto[:80]
+        texto = texto[:80] if isinstance(texto, str) else "Sem texto disponível"
         opcoes_dropdown.append({"label": f"{texto}...", "value": idx})
     return opcoes_dropdown
 

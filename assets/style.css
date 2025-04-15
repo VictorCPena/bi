@@ -47,8 +47,7 @@ body {
     transform: translateY(-5px);
 }
 
-/* Botões grandes com efeito de hover */
-/* Adicionada a classe candidate-button para bordas arredondadas */
+/* Botões grandes com efeito de hover e bordas arredondadas */
 .candidate-button {
     border-radius: 20px !important;
 }
@@ -77,9 +76,27 @@ a, .btn-primary {
     font-family: 'Roboto', sans-serif;
 }
 
-/* Imagens dos candidatos com bordas arredondadas */
+/* Imagem do candidato com bordas arredondadas nos cantos */
 .candidate-img {
-    border-radius: 20px;
+    border-radius: 20px !important;
     object-fit: contain;
     max-height: 300px;
+}
+
+/* Media queries para responsividade em dispositivos móveis */
+@media only screen and (max-width: 768px) {
+    /* Reduzir margens e padding para telas menores */
+    .graph-area {
+        padding: 10px;
+    }
+    
+    .rounded-container {
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+    
+    /* Ajustar tamanho das fontes */
+    .header-title, .card-title {
+        font-size: 1.8rem;
+    }
 }
